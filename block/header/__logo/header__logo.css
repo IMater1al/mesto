@@ -4,4 +4,15 @@
     width: 142px;
     height: 33px;
     background-image: url('../../../images/header-logo.svg');
+    background-repeat: no-repeat;
+}
+
+@media screen and (width <=700px) {
+    .header__logo {
+        margin-left: 27px;
+        margin-bottom: 32px;
+        width: 104px;
+        height: 25px;
+        background-image: url('../../../images/header-logo-sm.svg');
+    }
 }

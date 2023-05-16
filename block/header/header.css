@@ -4,3 +4,9 @@
     border-bottom: 1px solid #545454;
     box-sizing: border-box;
 }
+
+@media screen and (width <=700px) {
+    .header {
+        max-width: 320px;
+    }
+}
