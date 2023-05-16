@@ -1,5 +1,6 @@
 /* Vendor import */
 @import url('../vendor/normalize.css');
+@import url('../vendor/fonts/fonts.css');
 /* Block import */
 /* block .root */
 @import url('../block/root/root.css');
