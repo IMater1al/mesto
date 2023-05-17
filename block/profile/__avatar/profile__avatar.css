@@ -1,0 +1,19 @@
+.profile__avatar {
+    margin: 0 23px 0 0;
+    padding: 0;
+    object-fit: cover;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+@media screen and (width <=700px) {
+    .profile__avatar {
+        margin: 0;
+        padding: 0;
+        object-fit: cover;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
+}
