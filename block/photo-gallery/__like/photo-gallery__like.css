@@ -5,4 +5,7 @@
     width: 22px;
     background-repeat: no-repeat;
     background-position: center;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
 }
