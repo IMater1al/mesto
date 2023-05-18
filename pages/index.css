@@ -7,6 +7,7 @@
 @import url('../block/root/__header/root__header.css');
 @import url('../block/root/__profile/root__profile.css');
 @import url('../block/root/__photo-gallery/root__photo-gallery.css');
+@import url('../block/root/__footer/root__footer.css');
 /* block .button */
 @import url('../block/button/button.css');
 /* block .header */
@@ -30,3 +31,6 @@
 @import url('../block/photo-gallery/__like/photo-gallery__like.css');
 @import url('../block/photo-gallery/__list/photo-gallery__list.css');
 @import url('../block/photo-gallery/__name/photo-gallery__name.css');
+/* block .footer */
+@import url('../block/footer/footer.css');
+@import url('../block/footer/__copyright/footer__copyright.css');
