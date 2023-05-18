@@ -1,0 +1,16 @@
+.photo-gallery__list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 361px);
+    column-gap: 17px;
+    row-gap: 20px;
+    list-style: none;
+}
+
+@media screen and (width <=700px) {
+    .photo-gallery__list {
+        grid-template-columns: 1fr;
+    }
+}

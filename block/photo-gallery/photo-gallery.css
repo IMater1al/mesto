@@ -1,0 +1,9 @@
+.photo-gallery {
+    max-width: 880px;
+}
+
+@media screen and (width <=700px) {
+    .photo-gallery {
+        max-width: 282px;
+    }
+}

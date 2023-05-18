@@ -1,0 +1,8 @@
+.photo-gallery__like {
+    margin: 0;
+    padding: 0;
+    background-image: url('/images/like.svg');
+    width: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
