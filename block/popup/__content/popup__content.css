@@ -11,3 +11,11 @@
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
 }
+
+@media screen and (width <=700px) {
+    .popup__content {
+        margin: 123px auto;
+        padding: 25px 22px;
+        max-width: 282px;
+    }
+}
