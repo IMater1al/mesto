@@ -1,7 +1,11 @@
 .photo-gallery__name {
     padding: 0;
     margin: 0;
+    max-width: 187px;
     font-weight: 900;
     font-size: 24px;
     line-height: 29px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
