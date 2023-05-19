@@ -12,7 +12,6 @@
 @import url('../block/button/button.css');
 /* block .popup */
 @import url('../block/popup/popup.css');
-@import url('../block/popup/__button-text/popup__button-text.css');
 @import url('../block/popup/__close-button/popup__close-button.css');
 @import url('../block/popup/__content/popup__content.css');
 @import url('../block/popup/__header/popup__header.css');
