@@ -4,10 +4,14 @@
     font-weight: 500;
     font-size: 42px;
     line-height: 1.14;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @media screen and (width <=700px) {
     .profile__name {
+        max-width: calc(100% - 18px - 10px);
         font-size: 27px;
         line-height: 1.22;
         text-align: center;
