@@ -1,5 +1,6 @@
 .root__photo-gallery {
     margin-top: 50px;
+    width: 100%;
 }
 
 @media screen and (width <=700px) {
