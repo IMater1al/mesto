@@ -26,8 +26,6 @@ editButton.addEventListener('click', function () {
 });
 
 closeButton.addEventListener('click', function () {
-  accountNameInput.value = accountName.textContent;
-  accountActivityInput.value = accountActivity.textContent;
   popup.style.display = 'none';
 });
 
