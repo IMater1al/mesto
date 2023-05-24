@@ -4,14 +4,14 @@
     min-height: 50px;
     border: 2px solid #fff;
     border-radius: 2px;
-    background-color: #000;
+    background-color: rgb(0, 0, 0, 0);
     background-image: url('../../../images/add-button.svg');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
 }
 
-@media screen and (width <=700px) {
+@media screen and (max-width: 700px) {
     .profile__add-button {
         margin-top: 36px;
         min-width: none;

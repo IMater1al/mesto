@@ -5,10 +5,9 @@
     align-items: center;
 }
 
-@media screen and (width <=700px) {
+@media screen and (max-width: 700px) {
     .profile {
         max-width: 282px;
         flex-direction: column;
-        align-items: center;
     }
 }

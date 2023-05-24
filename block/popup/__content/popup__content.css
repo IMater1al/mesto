@@ -1,6 +1,6 @@
 .popup__content {
     position: relative;
-    margin: 195px auto;
+    margin: 0;
     padding: 34px 36px 36px 36px;
     max-width: 430px;
     display: flex;
@@ -12,9 +12,8 @@
     box-sizing: border-box;
 }
 
-@media screen and (width <=700px) {
+@media screen and (max-width: 700px) {
     .popup__content {
-        margin: 123px auto;
         padding: 25px 22px;
         max-width: 282px;
     }

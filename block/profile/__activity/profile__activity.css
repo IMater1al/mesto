@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 
-@media screen and (width <=700px) {
+@media screen and (max-width: 700px) {
     .profile__activity {
         grid-column: 1 / 2;
         font-size: 14px;

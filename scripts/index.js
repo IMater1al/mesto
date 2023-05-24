@@ -1,5 +1,5 @@
-let accountNameInput = document.querySelector('.popup__input-name');
-let accountActivityInput = document.querySelector('.popup__input-activity');
+let accountNameInput = document.querySelector('input[name="popupName"]');
+let accountActivityInput = document.querySelector('input[name="popupActivity"]');
 
 let popup = document.querySelector('.popup');
 

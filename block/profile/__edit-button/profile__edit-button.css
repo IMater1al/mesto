@@ -6,7 +6,7 @@
     align-self: end;
     justify-self: start;
     border: 1px solid #fff;
-    background-color: #000;
+    background-color: rgb(0, 0, 0, 0);
     background-image: url('../../../images/edit-button.svg');
     background-repeat: no-repeat;
     background-position: center;
@@ -14,7 +14,7 @@
     cursor: pointer;
 }
 
-@media screen and (width <=700px) {
+@media screen and (max-width: 700px) {
     .profile__edit-button {
         margin: 0 0 5px 0;
         min-width: 18px;
