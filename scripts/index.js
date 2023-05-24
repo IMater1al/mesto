@@ -6,31 +6,35 @@ let popup = document.querySelector('.popup');
 let accountName = document.querySelector('.profile__name');
 let accountActivity = document.querySelector('.profile__activity');
 
-let saveButton = document.querySelector('.popup__save-button');
+let form = document.querySelector('.popup__form');
+
 let editButton = document.querySelector('.profile__edit-button');
 let closeButton = document.querySelector('.popup__close-button');
-let likeButton = document.querySelectorAll('.photo-gallery__like');
+// let likeButton = document.querySelectorAll('.photo-gallery__like');
 
-accountNameInput.setAttribute('value', `${accountName.textContent}`);
-accountActivityInput.setAttribute('value', `${accountActivity.textContent}`);
-
-saveButton.addEventListener('click', function () {
+function sendData(evt) {
+  evt.preventDefault();
   accountName.textContent = accountNameInput.value;
   accountActivity.textContent = accountActivityInput.value;
+  popup.classList.remove('popup_visability_true');
+}
 
-  popup.style.display = 'none';
-});
+function editData() {
+  popup.classList.add('popup_visability_true');
+  accountNameInput.setAttribute('value', `${accountName.textContent}`);
+  accountActivityInput.setAttribute('value', `${accountActivity.textContent}`);
+}
 
-editButton.addEventListener('click', function () {
-  popup.style.display = 'block';
-});
+function closePopup() {
+  popup.classList.remove('popup_visability_true');
+}
 
-closeButton.addEventListener('click', function () {
-  popup.style.display = 'none';
-});
+form.addEventListener('submit', sendData);
+editButton.addEventListener('click', editData);
+closeButton.addEventListener('click', closePopup);
 
-likeButton.forEach(function (item) {
-  item.addEventListener('click', function () {
-    item.classList.toggle('photo-gallery__like_active');
-  });
-});
+// likeButton.forEach(function (item) {
+//   item.addEventListener('click', function () {
+//     item.classList.toggle('photo-gallery__like_active');
+//   });
+// });
