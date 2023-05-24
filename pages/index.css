@@ -10,6 +10,9 @@
 @import url('../block/root/__footer/root__footer.css');
 /* block .button */
 @import url('../block/button/button.css');
+@import url('../block/button/_opacity/button_opacity_low.css');
+@import url('../block/button/_opacity/button_opacity_medium.css');
+@import url('../block/button/_opacity/button_opacity_high.css');
 /* block .popup */
 @import url('../block/popup/popup.css');
 @import url('../block/popup/__close-button/popup__close-button.css');
