@@ -16,17 +16,17 @@ function sendData(evt) {
   evt.preventDefault();
   accountName.textContent = accountNameInput.value;
   accountActivity.textContent = accountActivityInput.value;
-  popup.classList.remove('popup_visability_true');
+  popup.classList.remove('popup_visible');
 }
 
 function editData() {
-  popup.classList.add('popup_visability_true');
-  accountNameInput.setAttribute('value', `${accountName.textContent}`);
-  accountActivityInput.setAttribute('value', `${accountActivity.textContent}`);
+  popup.classList.add('popup_visible');
+  accountNameInput.value = accountName.textContent;
+  accountActivityInput.value = accountActivity.textContent;
 }
 
 function closePopup() {
-  popup.classList.remove('popup_visability_true');
+  popup.classList.remove('popup_visible');
 }
 
 form.addEventListener('submit', sendData);
