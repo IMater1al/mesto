@@ -10,7 +10,7 @@ let form = document.querySelector('.popup__form');
 
 let editButton = document.querySelector('.profile__edit-button');
 let closeButton = document.querySelector('.popup__close-button');
-// let likeButton = document.querySelectorAll('.photo-gallery__like');
+let likeButton = document.querySelectorAll('.photo-gallery__like');
 
 function sendData(evt) {
   evt.preventDefault();
@@ -33,8 +33,8 @@ form.addEventListener('submit', sendData);
 editButton.addEventListener('click', editData);
 closeButton.addEventListener('click', closePopup);
 
-// likeButton.forEach(function (item) {
-//   item.addEventListener('click', function () {
-//     item.classList.toggle('photo-gallery__like_active');
-//   });
-// });
+likeButton.forEach(function (item) {
+  item.addEventListener('click', function () {
+    item.classList.toggle('photo-gallery__like_active');
+  });
+});
