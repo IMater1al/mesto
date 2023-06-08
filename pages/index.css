@@ -22,6 +22,9 @@
 @import url('../block/popup/__input/popup__input.css');
 @import url('../block/popup/__form/popup__form.css');
 @import url('../block/popup/_visible/popup_visible.css');
+@import url('../block/popup/__preview/popup__preview.css');
+@import url('../block/popup/__preview-image/popup__preview-image.css');
+@import url('../block/popup/__preview-text/popup__preview-text.css');
 /* block .header */
 @import url('../block/header/header.css');
 @import url('../block/header/__logo/header__logo.css');
