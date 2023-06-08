@@ -5,6 +5,7 @@ let picLinkInput = document.querySelector('input[name="popupPicLink"]');
 
 let editPopup = document.querySelector('#edit-popup');
 let addPopup = document.querySelector('#add-popup');
+let previewPopup = document.querySelector('#preview-popup');
 
 let accountName = document.querySelector('.profile__name');
 let accountActivity = document.querySelector('.profile__activity');
@@ -83,6 +84,18 @@ function addCard(name, link) {
   let likeButton = cardElement.querySelector('.photo-gallery__like');
   likeButton.addEventListener('click', evt => {
     evt.target.classList.toggle('photo-gallery__like_active');
+  });
+
+  let rmButton = cardElement.querySelector('.photo-gallery__remove');
+  rmButton.addEventListener('click', () => {
+    cardElement.remove();
+  });
+
+  cardElement.querySelector('.photo-gallery__image').addEventListener('click', () => {
+    previewPopup.classList.add('popup_visible');
+    previewPopup.querySelector('.popup__preview-image').src = link;
+    previewPopup.querySelector('.popup__preview-image').alt = name;
+    previewPopup.querySelector('.popup__preview-text').textContent = name;
   });
 }
 

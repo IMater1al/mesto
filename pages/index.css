@@ -44,6 +44,7 @@
 @import url('../block/photo-gallery/__like/_active/photo-gallery__like_active.css');
 @import url('../block/photo-gallery/__list/photo-gallery__list.css');
 @import url('../block/photo-gallery/__name/photo-gallery__name.css');
+@import url('../block/photo-gallery/__remove/photo-gallery__remove.css');
 /* block .footer */
 @import url('../block/footer/footer.css');
 @import url('../block/footer/__copyright/footer__copyright.css');

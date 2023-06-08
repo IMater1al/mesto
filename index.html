@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="pages/index.css" />
-
+    <link rel="stylesheet" href="temp-style.css" />
     <title>Mesto Russia</title>
   </head>
   <body class="root">
@@ -45,6 +45,16 @@
         </form>
       </div>
     </div>
+    <div class="popup" id="preview-popup">
+      <div class="popup__preview">
+        <button
+          aria-label="Закрыть"
+          type="reset"
+          class="popup__close-button button button_opacity_medium"></button>
+        <img src="" alt="" class="popup__preview-image" />
+        <p class="popup__preview-text"></p>
+      </div>
+    </div>
     <header class="header root__header">
       <div class="header__logo"></div>
     </header>
@@ -74,6 +84,10 @@
 
     <template id="card">
       <li class="photo-gallery__item">
+        <button
+          type="button"
+          aria-label="Удалить"
+          class="photo-gallery__remove button button_opacity_medium"></button>
         <img src="" alt="" class="photo-gallery__image" />
         <div class="photo-gallery__description">
           <h2 class="photo-gallery__name"></h2>
