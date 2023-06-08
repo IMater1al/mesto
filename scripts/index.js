@@ -1,15 +1,20 @@
 let accountNameInput = document.querySelector('input[name="popupName"]');
 let accountActivityInput = document.querySelector('input[name="popupActivity"]');
+let picNameInput = document.querySelector('input[name="popupPicName"]');
+let picLinkInput = document.querySelector('input[name="popupPicLink"]');
 
-let popup = document.querySelector('.popup');
+let editPopup = document.querySelector('#edit-popup');
+let addPopup = document.querySelector('#add-popup');
 
 let accountName = document.querySelector('.profile__name');
 let accountActivity = document.querySelector('.profile__activity');
 
-let form = document.querySelector('.popup__form');
+let profileForm = editPopup.querySelector('.popup__form');
+let galleryForm = addPopup.querySelector('.popup__form');
 
 let editButton = document.querySelector('.profile__edit-button');
-let closeButton = document.querySelector('.popup__close-button');
+let closeButton = document.querySelectorAll('.popup__close-button');
+let addButton = document.querySelector('.profile__add-button');
 
 let photoGallery = document.querySelector('.photo-gallery__list');
 
@@ -40,25 +45,31 @@ let initialCards = [
   }
 ];
 
-function sendData(evt) {
+function sendProfileData(evt) {
   evt.preventDefault();
   accountName.textContent = accountNameInput.value;
   accountActivity.textContent = accountActivityInput.value;
-  popup.classList.remove('popup_visible');
+  closePopup(evt);
 }
 
-function editData() {
-  popup.classList.add('popup_visible');
+function sendGalleryData(evt) {
+  evt.preventDefault();
+  addCard(picNameInput.value, picLinkInput.value);
+  closePopup(evt);
+}
+
+function editProfile() {
+  editPopup.classList.add('popup_visible');
   accountNameInput.value = accountName.textContent;
   accountActivityInput.value = accountActivity.textContent;
 }
 
-function closePopup() {
-  popup.classList.remove('popup_visible');
+function editGallery() {
+  addPopup.classList.add('popup_visible');
 }
 
-function like() {
-  this.classList.toggle('photo-gallery__like_active');
+function closePopup(evt) {
+  evt.target.parentNode.parentNode.classList.remove('popup_visible');
 }
 
 function addCard(name, link) {
@@ -67,20 +78,22 @@ function addCard(name, link) {
   cardElement.querySelector('.photo-gallery__image').src = link;
   cardElement.querySelector('.photo-gallery__image').alt = name;
   cardElement.querySelector('.photo-gallery__name').textContent = name;
-  photoGallery.append(cardElement);
+  photoGallery.prepend(cardElement);
+
+  let likeButton = cardElement.querySelector('.photo-gallery__like');
+  likeButton.addEventListener('click', evt => {
+    evt.target.classList.toggle('photo-gallery__like_active');
+  });
 }
 
 initialCards.forEach(item => {
   addCard(item.name, item.link);
 });
 
-form.addEventListener('submit', sendData);
-editButton.addEventListener('click', editData);
-closeButton.addEventListener('click', closePopup);
-
-let likeButton = document.querySelectorAll('.photo-gallery__like'); // Логика лайков
-likeButton.forEach(function (item) {
-  item.addEventListener('click', () => {
-    item.classList.toggle('photo-gallery__like_active');
-  });
+profileForm.addEventListener('submit', sendProfileData);
+galleryForm.addEventListener('submit', sendGalleryData);
+editButton.addEventListener('click', editProfile);
+addButton.addEventListener('click', editGallery);
+closeButton.forEach(item => {
+  item.addEventListener('click', closePopup);
 });
