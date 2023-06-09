@@ -9,14 +9,14 @@
     <title>Mesto Russia</title>
   </head>
   <body class="root">
-    <div class="popup" id="edit-popup">
+    <div class="popup root__edit-popup" id="edit-popup">
       <div class="popup__content">
         <button
           aria-label="Закрыть"
           type="reset"
-          class="popup__close-button button button_opacity_medium"></button>
+          class="popup__close-button popup__close-edit button button_opacity_medium"></button>
         <h2 class="popup__header">Редактировать профиль</h2>
-        <form class="popup__form" name="popupForm">
+        <form class="popup__form" name="popupEditForm">
           <input type="text" class="popup__input" name="popupName" />
           <input type="text" class="popup__input" name="popupActivity" />
           <button type="submit" class="popup__save-button button button_opacity_high">
@@ -25,14 +25,14 @@
         </form>
       </div>
     </div>
-    <div class="popup" id="add-popup">
+    <div class="popup root__add-popup" id="add-popup">
       <div class="popup__content">
         <button
           aria-label="Закрыть"
           type="reset"
-          class="popup__close-button button button_opacity_medium"></button>
+          class="popup__close-button popup__close-add button button_opacity_medium"></button>
         <h2 class="popup__header">Новое место</h2>
-        <form class="popup__form" name="popupForm">
+        <form class="popup__form" name="popupAddForm">
           <input type="text" class="popup__input" name="popupPicName" placeholder="Название" />
           <input
             type="text"
@@ -45,12 +45,12 @@
         </form>
       </div>
     </div>
-    <div class="popup" id="preview-popup">
+    <div class="popup root__preview-popup" id="preview-popup">
       <div class="popup__preview">
         <button
           aria-label="Закрыть"
           type="reset"
-          class="popup__close-button button button_opacity_medium"></button>
+          class="popup__close-button popup__close-preview button button_opacity_medium"></button>
         <img src="#" alt="#" class="popup__preview-image" />
         <p class="popup__preview-text"></p>
       </div>
@@ -99,6 +99,7 @@
       </li>
     </template>
 
+    <script src="scripts/initial-cards.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 </html>

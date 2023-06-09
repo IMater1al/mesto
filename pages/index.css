@@ -8,6 +8,9 @@
 @import url('../block/root/__profile/root__profile.css');
 @import url('../block/root/__photo-gallery/root__photo-gallery.css');
 @import url('../block/root/__footer/root__footer.css');
+@import url('../block/root/__add-popup/root__add-popup.css');
+@import url('../block/root/__edit-popup/root__edit-popup.css');
+@import url('../block/root/__preview-popup/root__preview-popup.css');
 /* block .button */
 @import url('../block/button/button.css');
 @import url('../block/button/_opacity/button_opacity_low.css');
@@ -25,6 +28,9 @@
 @import url('../block/popup/__preview/popup__preview.css');
 @import url('../block/popup/__preview-image/popup__preview-image.css');
 @import url('../block/popup/__preview-text/popup__preview-text.css');
+@import url('../block/popup/__close-edit/popup__close-edit.css');
+@import url('../block/popup/__close-add/popup__close-add.css');
+@import url('../block/popup/__close-preview/popup__close-preview.css');
 /* block .header */
 @import url('../block/header/header.css');
 @import url('../block/header/__logo/header__logo.css');
