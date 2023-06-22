@@ -5,6 +5,7 @@ const picNameInput = document.querySelector('input[name="popupPicName"]');
 const picLinkInput = document.querySelector('input[name="popupPicLink"]');
 
 const editPopup = document.querySelector('#edit-popup');
+
 const addPopup = document.querySelector('#add-popup');
 const previewPopup = document.querySelector('#preview-popup');
 
@@ -104,12 +105,18 @@ profileForm.addEventListener('submit', sendProfileData);
 galleryForm.addEventListener('submit', sendGalleryData);
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', editGallery);
-editCloseButton.addEventListener('click', () => {
-  closePopup(editPopup);
+editPopup.addEventListener('click', evt => {
+  if (evt.target === editCloseButton || evt.target === editPopup) {
+    closePopup(editPopup);
+  }
 });
-addCloseButton.addEventListener('click', () => {
-  closePopup(addPopup);
+addPopup.addEventListener('click', evt => {
+  if (evt.target === addCloseButton || evt.target === addPopup) {
+    closePopup(addPopup);
+  }
 });
-previewCloseButton.addEventListener('click', () => {
-  closePopup(previewPopup);
+previewPopup.addEventListener('click', evt => {
+  if (evt.target === previewCloseButton || evt.target === previewPopup) {
+    closePopup(previewPopup);
+  }
 });
