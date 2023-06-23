@@ -12,6 +12,9 @@ const previewPopup = document.querySelector('#preview-popup');
 const accountName = document.querySelector('.profile__name');
 const accountActivity = document.querySelector('.profile__activity');
 
+accountNameInput.value = accountName.textContent;
+accountActivityInput.value = accountActivity.textContent;
+
 const profileForm = editPopup.querySelector('.popup__form');
 
 const galleryForm = addPopup.querySelector('.popup__form');
@@ -43,8 +46,6 @@ function sendGalleryData(evt) {
 
 function editProfile() {
   openPopup(editPopup);
-  accountNameInput.value = accountName.textContent;
-  accountActivityInput.value = accountActivity.textContent;
 }
 
 function editGallery() {

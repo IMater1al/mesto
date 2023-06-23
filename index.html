@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="pages/index.css" />
+    <link rel="stylesheet" href="temp-style.css" />
 
     <title>Mesto Russia</title>
+
     <script src="scripts/initial-cards.js" defer></script>
     <script src="scripts/index.js" defer></script>
+    <script src="scripts/validate.js" defer></script>
   </head>
   <body class="root">
     <div class="popup root__edit-popup" id="edit-popup">
@@ -18,9 +21,25 @@
           type="reset"
           class="popup__close-button popup__close-edit button button_opacity_medium"></button>
         <h2 class="popup__header">Редактировать профиль</h2>
-        <form class="popup__form" name="popupEditForm">
-          <input type="text" class="popup__input" name="popupName" />
-          <input type="text" class="popup__input" name="popupActivity" />
+        <form class="popup__form" name="popupEditForm" novalidate>
+          <input
+            id="name-input"
+            type="text"
+            class="popup__input"
+            name="popupName"
+            minlength="2"
+            maxlength="40"
+            required />
+          <span class="popup__input-error name-input-error"></span>
+          <input
+            id="activity-input"
+            type="text"
+            class="popup__input"
+            name="popupActivity"
+            minlength="2"
+            maxlength="200"
+            required />
+          <span class="popup__input-error activity-input-error"></span>
           <button type="submit" class="popup__save-button button button_opacity_high">
             Сохранить
           </button>
