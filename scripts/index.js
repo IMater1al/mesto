@@ -106,13 +106,26 @@ profileForm.addEventListener('submit', sendProfileData);
 galleryForm.addEventListener('submit', sendGalleryData);
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', editGallery);
+
 editPopup.addEventListener('click', evt => {
   if (evt.target === editCloseButton || evt.target === editPopup) {
     closePopup(editPopup);
   }
 });
+editPopup.addEventListener('keydown', evt => {
+  if (evt.key === 'Escape') {
+    closePopup(editPopup);
+  }
+});
+
 addPopup.addEventListener('click', evt => {
   if (evt.target === addCloseButton || evt.target === addPopup) {
+    closePopup(addPopup);
+  }
+});
+
+addPopup.addEventListener('keydown', evt => {
+  if (evt.key === 'Escape') {
     closePopup(addPopup);
   }
 });
