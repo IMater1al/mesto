@@ -43,11 +43,9 @@ function enableValidation(settings) {
 
   function isFormValid(inputElements, buttonEl) {
     if (hasAnyInvalidInput(inputElements)) {
-      buttonEl.classList.add(settings.inactiveButtonClass);
-      buttonEl.setAttribute('disabled', true);
+      disableButton(buttonEl, settings.inactiveButtonClass, settings.buttonHoverEffectClass);
     } else {
-      buttonEl.classList.remove(settings.inactiveButtonClass);
-      buttonEl.removeAttribute('disabled');
+      enableButton(buttonEl, settings.inactiveButtonClass, settings.buttonHoverEffectClass);
     }
   }
 
@@ -58,11 +56,24 @@ function enableValidation(settings) {
   }
 }
 
+function disableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
+  buttonEl.classList.add(inactiveButtonClass);
+  buttonEl.classList.remove(buttonHoverEffectClass);
+  buttonEl.setAttribute('disabled', true);
+}
+
+function enableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
+  buttonEl.classList.remove(inactiveButtonClass);
+  buttonEl.classList.add(buttonHoverEffectClass);
+  buttonEl.removeAttribute('disabled');
+}
+
 enableValidation({
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save-button',
   inactiveButtonClass: 'popup__save-button_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible'
+  errorClass: 'popup__input-error_visible',
+  buttonHoverEffectClass: 'button_opacity_high'
 });

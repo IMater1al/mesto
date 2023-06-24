@@ -30,6 +30,9 @@ const photoGallery = document.querySelector('.photo-gallery__list');
 
 const cardTemplate = document.querySelector('#card').content;
 
+const popupPreviewImage = previewPopup.querySelector('.popup__preview-image');
+const popupPreviewText = previewPopup.querySelector('.popup__preview-text');
+
 function sendProfileData(evt) {
   evt.preventDefault();
   accountName.textContent = accountNameInput.value;
@@ -42,6 +45,12 @@ function sendGalleryData(evt) {
   addCard(createCard(picNameInput.value, picLinkInput.value));
   closePopup(addPopup);
   galleryForm.reset();
+
+  disableButton(
+    evt.target.querySelector('[type="submit"]'),
+    'popup__save-button_disabled',
+    'button_opacity_high'
+  );
 }
 
 function editProfile() {
@@ -54,10 +63,19 @@ function editGallery() {
 
 function openPopup(popup) {
   popup.classList.add('popup_visible');
+
+  document.addEventListener('keydown', setCloseOnEsc);
+}
+
+function setCloseOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(evt.currentTarget.querySelector('.popup_visible'));
+  }
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_visible');
+  document.removeEventListener('keydown', setCloseOnEsc);
 }
 
 function createCard(name, link) {
@@ -78,9 +96,9 @@ function createCard(name, link) {
 
   cardImageElement.addEventListener('click', () => {
     openPopup(previewPopup);
-    previewPopup.querySelector('.popup__preview-image').src = link;
-    previewPopup.querySelector('.popup__preview-image').alt = name;
-    previewPopup.querySelector('.popup__preview-text').textContent = name;
+    popupPreviewImage.src = link;
+    popupPreviewImage.alt = name;
+    popupPreviewText.textContent = name;
   });
 
   return cardElement;
@@ -107,13 +125,8 @@ galleryForm.addEventListener('submit', sendGalleryData);
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', editGallery);
 
-editPopup.addEventListener('click', evt => {
+editPopup.addEventListener('mousedown', evt => {
   if (evt.target === editCloseButton || evt.target === editPopup) {
-    closePopup(editPopup);
-  }
-});
-editPopup.addEventListener('keydown', evt => {
-  if (evt.key === 'Escape') {
     closePopup(editPopup);
   }
 });
@@ -124,11 +137,6 @@ addPopup.addEventListener('click', evt => {
   }
 });
 
-addPopup.addEventListener('keydown', evt => {
-  if (evt.key === 'Escape') {
-    closePopup(addPopup);
-  }
-});
 previewPopup.addEventListener('click', evt => {
   if (evt.target === previewCloseButton || evt.target === previewPopup) {
     closePopup(previewPopup);
