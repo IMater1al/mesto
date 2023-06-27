@@ -131,13 +131,13 @@ editPopup.addEventListener('mousedown', evt => {
   }
 });
 
-addPopup.addEventListener('click', evt => {
+addPopup.addEventListener('mousedown', evt => {
   if (evt.target === addCloseButton || evt.target === addPopup) {
     closePopup(addPopup);
   }
 });
 
-previewPopup.addEventListener('click', evt => {
+previewPopup.addEventListener('mousedown', evt => {
   if (evt.target === previewCloseButton || evt.target === previewPopup) {
     closePopup(previewPopup);
   }
