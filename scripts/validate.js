@@ -1,55 +1,64 @@
-function enableValidation(settings) {
-  const forms = Array.from(document.querySelectorAll(settings.formSelector));
+class FormValidator {
+  constructor(settings, form) {
+    this.settings = settings;
+    this.form = form;
+  }
 
-  forms.forEach(form => {
-    setEventListeners(form);
-  });
+  enableValidation() {
+    const inputElements = Array.from(this.form.querySelectorAll(this.settings.inputSelector));
+    const buttonEl = this.form.querySelector(this.settings.submitButtonSelector);
 
-  function setEventListeners(form) {
-    const inputElements = Array.from(form.querySelectorAll(settings.inputSelector));
-    const buttonEl = form.querySelector(settings.submitButtonSelector);
-    isFormValid(inputElements, buttonEl);
+    this._isFormValid(inputElements, buttonEl);
+
     inputElements.forEach(inputEl => {
       inputEl.addEventListener('input', evt => {
-        isInputValid(form, inputEl);
-        isFormValid(inputElements, buttonEl);
+        this._isInputValid(inputEl);
+        this._isFormValid(inputElements, buttonEl);
       });
     });
   }
 
-  function isInputValid(form, inputEl) {
+  _isInputValid(inputEl) {
     if (!inputEl.validity.valid) {
-      showError(form, inputEl, inputEl.validationMessage);
+      this._showError(inputEl, inputEl.validationMessage);
     } else {
-      hideError(form, inputEl);
+      this._hideError(inputEl);
     }
   }
 
-  function showError(form, inputEl, errorMessage) {
-    const errorEl = form.querySelector(`.${inputEl.id}-error`);
+  _showError(inputEl, errorMessage) {
+    const errorEl = this.form.querySelector(`.${inputEl.id}-error`);
 
-    inputEl.classList.add(settings.inputErrorClass);
-    errorEl.classList.add(settings.errorClass);
+    inputEl.classList.add(this.settings.inputErrorClass);
+    errorEl.classList.add(this.settings.errorClass);
     errorEl.textContent = errorMessage;
   }
 
-  function hideError(form, inputEl) {
-    const errorEl = form.querySelector(`.${inputEl.id}-error`);
+  _hideError(inputEl) {
+    const errorEl = this.form.querySelector(`.${inputEl.id}-error`);
 
-    inputEl.classList.remove(settings.inputErrorClass);
-    errorEl.classList.remove(settings.errorClass);
+    inputEl.classList.remove(this.settings.inputErrorClass);
+    errorEl.classList.remove(this.settings.errorClass);
     errorEl.textContent = '';
   }
 
-  function isFormValid(inputElements, buttonEl) {
-    if (hasAnyInvalidInput(inputElements)) {
-      disableButton(buttonEl, settings.inactiveButtonClass, settings.buttonHoverEffectClass);
+  _isFormValid(inputElements, buttonEl) {
+    if (this._hasAnyInvalidInput(inputElements)) {
+      disableButton(
+        buttonEl,
+        this.settings.inactiveButtonClass,
+        this.settings.buttonHoverEffectClass
+      );
     } else {
-      enableButton(buttonEl, settings.inactiveButtonClass, settings.buttonHoverEffectClass);
+      enableButton(
+        buttonEl,
+        this.settings.inactiveButtonClass,
+        this.settings.buttonHoverEffectClass
+      );
     }
   }
 
-  function hasAnyInvalidInput(inputElements) {
+  _hasAnyInvalidInput(inputElements) {
     return Array.from(inputElements).some(inputEl => {
       return !inputEl.validity.valid;
     });
@@ -68,7 +77,7 @@ function enableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
   buttonEl.removeAttribute('disabled');
 }
 
-enableValidation({
+const settings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save-button',
@@ -76,4 +85,10 @@ enableValidation({
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_visible',
   buttonHoverEffectClass: 'button_opacity_high'
+};
+
+const forms = Array.from(document.forms);
+
+forms.forEach(form => {
+  new FormValidator(settings, form).enableValidation();
 });
