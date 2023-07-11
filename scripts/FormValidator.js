@@ -1,3 +1,5 @@
+import { disableButton, enableButton } from '../scripts/index.js';
+
 class FormValidator {
   constructor(settings, form) {
     this.settings = settings;
@@ -65,30 +67,4 @@ class FormValidator {
   }
 }
 
-function disableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
-  buttonEl.classList.add(inactiveButtonClass);
-  buttonEl.classList.remove(buttonHoverEffectClass);
-  buttonEl.setAttribute('disabled', true);
-}
-
-function enableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
-  buttonEl.classList.remove(inactiveButtonClass);
-  buttonEl.classList.add(buttonHoverEffectClass);
-  buttonEl.removeAttribute('disabled');
-}
-
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible',
-  buttonHoverEffectClass: 'button_opacity_high'
-};
-
-const forms = Array.from(document.forms);
-
-forms.forEach(form => {
-  new FormValidator(settings, form).enableValidation();
-});
+export { FormValidator, disableButton, enableButton };

@@ -1,3 +1,8 @@
+import { Card } from '../scripts/Card.js';
+import { FormValidator } from '../scripts/FormValidator.js';
+import { initialCards } from '../scripts/initial-cards.js';
+
+// Объявление переменных-------------------------------------------
 const accountNameInput = document.querySelector('input[name="popupName"]');
 const accountActivityInput = document.querySelector('input[name="popupActivity"]');
 
@@ -9,11 +14,11 @@ const editPopup = document.querySelector('#edit-popup');
 const addPopup = document.querySelector('#add-popup');
 const previewPopup = document.querySelector('#preview-popup');
 
+const popupPreviewImage = previewPopup.querySelector('.popup__preview-image');
+const popupPreviewText = previewPopup.querySelector('.popup__preview-text');
+
 const accountName = document.querySelector('.profile__name');
 const accountActivity = document.querySelector('.profile__activity');
-
-accountNameInput.value = accountName.textContent;
-accountActivityInput.value = accountActivity.textContent;
 
 const profileForm = editPopup.querySelector('.popup__form');
 
@@ -28,70 +33,27 @@ const previewCloseButton = document.querySelector('.popup__close-preview');
 
 const photoGallery = document.querySelector('.photo-gallery__list');
 
-const cardTemplate = document.querySelector('#card').content;
+const settings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_visible',
+  buttonHoverEffectClass: 'button_opacity_high'
+};
 
-const popupPreviewImage = previewPopup.querySelector('.popup__preview-image');
-const popupPreviewText = previewPopup.querySelector('.popup__preview-text');
+const forms = Array.from(document.forms);
+//---------------------------------- Основная часть кода ----------------------------------
+accountNameInput.value = accountName.textContent;
+accountActivityInput.value = accountActivity.textContent;
 
-class Card {
-  constructor(name, link, templateSelector) {
-    this.name = name;
-    this.link = link;
-    this.templateSelector = templateSelector;
-  }
+// Включение валидации для каждой формы на странице -------------------------------
+forms.forEach(form => {
+  new FormValidator(settings, form).enableValidation();
+});
 
-  createCard() {
-    const cardTemplate = document.querySelector(this.templateSelector).content;
-    const cardElement = cardTemplate.querySelector('.photo-gallery__item').cloneNode(true);
-    const cardImageElement = cardElement.querySelector('.photo-gallery__image');
-    cardImageElement.src = this.link;
-    cardImageElement.alt = this.name;
-
-    cardElement.querySelector('.photo-gallery__name').textContent = this.name;
-
-    this._setEventListeners(cardElement, cardImageElement);
-
-    return cardElement;
-  }
-
-  _setEventListeners(cardElement, cardImageElement) {
-    this._setLikeListener(cardElement);
-    this._setRemoveListener(cardElement);
-    this._setCardListener(cardImageElement);
-  }
-
-  _setLikeListener(cardElement) {
-    const likeButton = cardElement.querySelector('.photo-gallery__like');
-
-    function addLike(evt) {
-      evt.target.classList.toggle('photo-gallery__like_active');
-    }
-
-    likeButton.addEventListener('click', addLike);
-  }
-
-  _setRemoveListener(cardElement) {
-    const rmButton = cardElement.querySelector('.photo-gallery__remove');
-
-    function removeCard(card) {
-      card.remove();
-    }
-
-    rmButton.addEventListener('click', () => {
-      removeCard(cardElement);
-    });
-  }
-
-  _setCardListener(cardImageElement) {
-    cardImageElement.addEventListener('click', () => {
-      openPopup(previewPopup);
-      popupPreviewImage.src = this.link;
-      popupPreviewImage.alt = this.name;
-      popupPreviewText.textContent = this.name;
-    });
-  }
-}
-
+// Функции отправки данных --------------------------------------------------------
 function sendProfileData(evt) {
   evt.preventDefault();
   accountName.textContent = accountNameInput.value;
@@ -112,6 +74,19 @@ function sendGalleryData(evt) {
   );
 }
 
+// Функции включения и отключения кнопок -------------------------------------------
+function disableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
+  buttonEl.classList.add(inactiveButtonClass);
+  buttonEl.classList.remove(buttonHoverEffectClass);
+  buttonEl.setAttribute('disabled', true);
+}
+
+function enableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
+  buttonEl.classList.remove(inactiveButtonClass);
+  buttonEl.classList.add(buttonHoverEffectClass);
+  buttonEl.removeAttribute('disabled');
+}
+// Вынесенные функции для слушателей -----------------------------------------------
 function editProfile() {
   openPopup(editPopup);
 }
@@ -120,16 +95,10 @@ function editGallery() {
   openPopup(addPopup);
 }
 
+// Функции открытия и закрытия popup -------------------------------------------------
 function openPopup(popup) {
   popup.classList.add('popup_visible');
-
   document.addEventListener('keydown', setCloseOnEsc);
-}
-
-function setCloseOnEsc(evt) {
-  if (evt.key === 'Escape') {
-    closePopup(evt.currentTarget.querySelector('.popup_visible'));
-  }
 }
 
 function closePopup(popup) {
@@ -137,14 +106,24 @@ function closePopup(popup) {
   document.removeEventListener('keydown', setCloseOnEsc);
 }
 
+// Закрытие popup на Esc
+function setCloseOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(evt.currentTarget.querySelector('.popup_visible'));
+  }
+}
+
+// Добавление карточки -------------------------------------------------
 function addCard(card) {
   photoGallery.prepend(card);
 }
 
+// Заполнение начальными карточками  -------------------------------------------------
 initialCards.forEach(item => {
   addCard(new Card(item.name, item.link, '#card').createCard());
 });
 
+// Установка слушателей -----------------------------------------------
 profileForm.addEventListener('submit', sendProfileData);
 galleryForm.addEventListener('submit', sendGalleryData);
 editButton.addEventListener('click', editProfile);
@@ -167,3 +146,13 @@ previewPopup.addEventListener('mousedown', evt => {
     closePopup(previewPopup);
   }
 });
+
+// Экспорт данных
+export {
+  openPopup,
+  previewPopup,
+  popupPreviewImage,
+  popupPreviewText,
+  enableButton,
+  disableButton
+};
