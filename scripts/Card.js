@@ -2,60 +2,66 @@ import { openPopup, previewPopup, popupPreviewImage, popupPreviewText } from './
 
 class Card {
   constructor(name, link, templateSelector) {
-    this.name = name;
-    this.link = link;
-    this.templateSelector = templateSelector;
+    this._name = name;
+    this._link = link;
+    this._templateSelector = templateSelector;
+
+    this._cardTemplate = document.querySelector(this._templateSelector).content;
+    this._cardElement = this._cardTemplate.querySelector('.photo-gallery__item').cloneNode(true);
+    this._cardImageElement = this._cardElement.querySelector('.photo-gallery__image');
+
+    this._likeButton = this._cardElement.querySelector('.photo-gallery__like');
+    this._rmButton = this._cardElement.querySelector('.photo-gallery__remove');
   }
+
+  // Генерация карточки ------------------------------------------
 
   createCard() {
-    const cardTemplate = document.querySelector(this.templateSelector).content;
-    const cardElement = cardTemplate.querySelector('.photo-gallery__item').cloneNode(true);
-    const cardImageElement = cardElement.querySelector('.photo-gallery__image');
-    cardImageElement.src = this.link;
-    cardImageElement.alt = this.name;
+    this._cardImageElement.src = this._link;
+    this._cardImageElement.alt = this._name;
+    this._cardElement.querySelector('.photo-gallery__name').textContent = this._name;
 
-    cardElement.querySelector('.photo-gallery__name').textContent = this.name;
+    this._setEventListeners();
 
-    this._setEventListeners(cardElement, cardImageElement);
-
-    return cardElement;
+    return this._cardElement;
   }
 
-  _setEventListeners(cardElement, cardImageElement) {
-    this._setLikeListener(cardElement);
-    this._setRemoveListener(cardElement);
-    this._setCardListener(cardImageElement);
+  // Установка слушателей ------------------------------------------
+
+  _setEventListeners() {
+    this._setLikeListener();
+    this._setRemoveListener();
+    this._setCardListener();
   }
 
-  _setLikeListener(cardElement) {
-    const likeButton = cardElement.querySelector('.photo-gallery__like');
-
-    function addLike(evt) {
-      evt.target.classList.toggle('photo-gallery__like_active');
-    }
-
-    likeButton.addEventListener('click', addLike);
+  // Приватные методы для слушателей ---------------------------------
+  _addLike(evt) {
+    evt.target.classList.toggle('photo-gallery__like_active');
   }
 
-  _setRemoveListener(cardElement) {
-    const rmButton = cardElement.querySelector('.photo-gallery__remove');
-
-    function removeCard(card) {
-      card.remove();
-    }
-
-    rmButton.addEventListener('click', () => {
-      removeCard(cardElement);
-    });
+  _removeCard() {
+    this._cardElement.remove();
   }
 
-  _setCardListener(cardImageElement) {
-    cardImageElement.addEventListener('click', () => {
-      openPopup(previewPopup);
-      popupPreviewImage.src = this.link;
-      popupPreviewImage.alt = this.name;
-      popupPreviewText.textContent = this.name;
-    });
+  _showPreviewPopup() {
+    openPopup(previewPopup);
+    popupPreviewImage.src = this._link;
+    popupPreviewImage.alt = this._name;
+    popupPreviewText.textContent = this._name;
+  }
+
+  // Слушатели --------------------------------------------------------
+
+  _setLikeListener() {
+    this._likeButton.addEventListener('click', this._addLike);
+  }
+
+  _setRemoveListener() {
+    this._rmButton.addEventListener('click', this._removeCard.bind(this));
+  }
+
+  _setCardListener() {
+    this._cardImageElement.addEventListener('click', this._showPreviewPopup.bind(this));
   }
 }
 

@@ -1,6 +1,6 @@
 import { Card } from '../scripts/Card.js';
 import { FormValidator } from '../scripts/FormValidator.js';
-import { initialCards } from '../scripts/initial-cards.js';
+import { initialCards, settings } from './constants.js';
 
 // Объявление переменных-------------------------------------------
 const accountNameInput = document.querySelector('input[name="popupName"]');
@@ -33,24 +33,18 @@ const previewCloseButton = document.querySelector('.popup__close-preview');
 
 const photoGallery = document.querySelector('.photo-gallery__list');
 
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible',
-  buttonHoverEffectClass: 'button_opacity_high'
-};
-
 const forms = Array.from(document.forms);
+
+const validators = {};
 //---------------------------------- Основная часть кода ----------------------------------
 accountNameInput.value = accountName.textContent;
 accountActivityInput.value = accountActivity.textContent;
 
 // Включение валидации для каждой формы на странице -------------------------------
 forms.forEach(form => {
-  new FormValidator(settings, form).enableValidation();
+  const validator = new FormValidator(settings, form);
+  validator.enableValidation();
+  validators[form.getAttribute('name')] = validator;
 });
 
 // Функции отправки данных --------------------------------------------------------
@@ -63,29 +57,13 @@ function sendProfileData(evt) {
 
 function sendGalleryData(evt) {
   evt.preventDefault();
-  addCard(new Card(picNameInput.value, picLinkInput.value, '#card').createCard());
+  addCard(createCard(picNameInput.value, picLinkInput.value));
   closePopup(addPopup);
   galleryForm.reset();
 
-  disableButton(
-    evt.target.querySelector('[type="submit"]'),
-    'popup__save-button_disabled',
-    'button_opacity_high'
-  );
+  validators[galleryForm.getAttribute('name')].disableButton();
 }
 
-// Функции включения и отключения кнопок -------------------------------------------
-function disableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
-  buttonEl.classList.add(inactiveButtonClass);
-  buttonEl.classList.remove(buttonHoverEffectClass);
-  buttonEl.setAttribute('disabled', true);
-}
-
-function enableButton(buttonEl, inactiveButtonClass, buttonHoverEffectClass) {
-  buttonEl.classList.remove(inactiveButtonClass);
-  buttonEl.classList.add(buttonHoverEffectClass);
-  buttonEl.removeAttribute('disabled');
-}
 // Вынесенные функции для слушателей -----------------------------------------------
 function editProfile() {
   openPopup(editPopup);
@@ -93,6 +71,12 @@ function editProfile() {
 
 function editGallery() {
   openPopup(addPopup);
+}
+
+function closePopupByClick(evt) {
+  if (evt.target.classList.contains('popup__close-button') || evt.target == evt.currentTarget) {
+    closePopup(evt.currentTarget);
+  }
 }
 
 // Функции открытия и закрытия popup -------------------------------------------------
@@ -114,45 +98,29 @@ function setCloseOnEsc(evt) {
 }
 
 // Добавление карточки -------------------------------------------------
+function createCard(name, link) {
+  return new Card(name, link, '#card').createCard(); // Немного не понял про создание отдельного метода, подумал про отдельную функцию, которая карточку возвращает, напишите пожалуйста если что то другое имели ввиду
+}
+
 function addCard(card) {
   photoGallery.prepend(card);
 }
 
 // Заполнение начальными карточками  -------------------------------------------------
 initialCards.forEach(item => {
-  addCard(new Card(item.name, item.link, '#card').createCard());
+  addCard(createCard(item.name, item.link));
 });
 
 // Установка слушателей -----------------------------------------------
 profileForm.addEventListener('submit', sendProfileData);
 galleryForm.addEventListener('submit', sendGalleryData);
+
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', editGallery);
 
-editPopup.addEventListener('mousedown', evt => {
-  if (evt.target === editCloseButton || evt.target === editPopup) {
-    closePopup(editPopup);
-  }
-});
-
-addPopup.addEventListener('mousedown', evt => {
-  if (evt.target === addCloseButton || evt.target === addPopup) {
-    closePopup(addPopup);
-  }
-});
-
-previewPopup.addEventListener('mousedown', evt => {
-  if (evt.target === previewCloseButton || evt.target === previewPopup) {
-    closePopup(previewPopup);
-  }
-});
+editPopup.addEventListener('mousedown', closePopupByClick);
+addPopup.addEventListener('mousedown', closePopupByClick);
+previewPopup.addEventListener('mousedown', closePopupByClick);
 
 // Экспорт данных
-export {
-  openPopup,
-  previewPopup,
-  popupPreviewImage,
-  popupPreviewText,
-  enableButton,
-  disableButton
-};
+export { openPopup, previewPopup, popupPreviewImage, popupPreviewText };
