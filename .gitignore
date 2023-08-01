@@ -1,2 +1,4 @@
 temp-style.css
 .vscode
+node_modules
+dist
