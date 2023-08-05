@@ -7,9 +7,13 @@ export default class PopupWithForm extends Popup {
     this._form = this._popup.querySelector('form');
     this._inputs = Array.from(this._form.querySelectorAll('input'));
     this._userInfo = userInfoObject.getUserInfo();
+    if (this._form.name === 'popupEditForm') {
+      this._setInputValues();
+    }
+    console.log(this.getInputValues());
   }
 
-  _getInputValues() {
+  getInputValues() {
     const inputValues = {};
     this._inputs.forEach(input => {
       inputValues[input.name] = input.value;
@@ -20,13 +24,6 @@ export default class PopupWithForm extends Popup {
   _setInputValues() {
     this._inputs[0].value = this._userInfo.name;
     this._inputs[1].value = this._userInfo.activity;
-  }
-
-  open() {
-    super.open();
-    if (this._form.name === 'popupEditForm') {
-      this._setInputValues();
-    }
   }
 
   close() {

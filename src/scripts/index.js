@@ -38,7 +38,7 @@ forms.forEach(form => {
 // Функции отправки данных --------------------------------------------------------
 function sendProfileData(evt) {
   evt.preventDefault();
-  userInfo.setUserInfo(accountNameInput.value, accountActivityInput.value);
+  userInfo.setUserInfo(editPopup.getInputValues());
   editPopup.close();
 }
 

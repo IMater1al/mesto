@@ -11,8 +11,9 @@ export default class UserInfo {
     };
   }
 
-  setUserInfo(newName, newActivity) {
-    this._accountName.textContent = newName;
-    this._accountActivity.textContent = newActivity;
+  setUserInfo(data) {
+    const { popupName: name, popupActivity: activity } = data;
+    this._accountName.textContent = name;
+    this._accountActivity.textContent = activity;
   }
 }
