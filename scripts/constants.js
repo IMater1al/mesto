@@ -35,4 +35,23 @@ const settings = {
   buttonHoverEffectClass: 'button_opacity_high'
 };
 
-export { initialCards, settings };
+const picNameInput = document.querySelector('input[name="popupPicName"]');
+const picLinkInput = document.querySelector('input[name="popupPicLink"]');
+
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+
+const photoGallery = document.querySelector('.photo-gallery__list');
+
+const forms = Array.from(document.forms);
+
+export {
+  initialCards,
+  settings,
+  picNameInput,
+  picLinkInput,
+  editButton,
+  addButton,
+  photoGallery,
+  forms
+};

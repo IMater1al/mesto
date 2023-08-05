@@ -1,7 +1,5 @@
-import { openPopup, previewPopup, popupPreviewImage, popupPreviewText } from './index.js';
-
 class Card {
-  constructor(name, link, templateSelector) {
+  constructor(name, link, templateSelector, handleCardClick) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
@@ -12,6 +10,8 @@ class Card {
 
     this._likeButton = this._cardElement.querySelector('.photo-gallery__like');
     this._rmButton = this._cardElement.querySelector('.photo-gallery__remove');
+
+    this._handleCardClick = handleCardClick;
   }
 
   // Генерация карточки ------------------------------------------
@@ -43,13 +43,6 @@ class Card {
     this._cardElement.remove();
   }
 
-  _showPreviewPopup() {
-    openPopup(previewPopup);
-    popupPreviewImage.src = this._link;
-    popupPreviewImage.alt = this._name;
-    popupPreviewText.textContent = this._name;
-  }
-
   // Слушатели --------------------------------------------------------
 
   _setLikeListener() {
@@ -61,7 +54,7 @@ class Card {
   }
 
   _setCardListener() {
-    this._cardImageElement.addEventListener('click', this._showPreviewPopup.bind(this));
+    this._cardImageElement.addEventListener('click', this._handleCardClick);
   }
 }
 
