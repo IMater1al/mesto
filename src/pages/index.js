@@ -5,8 +5,7 @@ import PopupWithForm from '../scripts/PopupWithForm.js';
 import PopupWithImage from '../scripts/PopupWithImage.js';
 import Section from '../scripts/Section.js';
 import UserInfo from '../scripts/UserInfo.js';
-import { settings, editButton, addButton, forms } from '../scripts/constants.js';
-import { initialCards } from '../scripts/utils.js';
+import { initialCards, settings, editButton, addButton, forms } from '../utils/constants.js';
 
 // Объявление переменных-------------------------------------------
 
@@ -14,9 +13,9 @@ const userInfo = new UserInfo({
   accountNameSelector: '.profile__name',
   accountActivitySelector: '.profile__activity'
 });
-const editPopup = new PopupWithForm(sendProfileData, '#edit-popup', userInfo);
+const editPopup = new PopupWithForm(sendProfileData, '#edit-popup');
 
-const addPopup = new PopupWithForm(sendGalleryData, '#add-popup', userInfo);
+const addPopup = new PopupWithForm(sendGalleryData, '#add-popup');
 
 const renderCards = new Section(
   { items: initialCards, renderer: createCard },
@@ -29,7 +28,14 @@ const validators = {};
 
 //---------------------------------- Основная часть кода ----------------------------------
 
+editPopup.setInputValues({
+  // пришлось это перенести выше, чтобы валидатор срабатывал, когда поля уже заняты значением, иначе кнопка при открытии попапа аккаунта неактивна была
+  popupName: userInfo.getUserInfo().name,
+  popupActivity: userInfo.getUserInfo().activity
+});
+
 // Включение валидации для каждой формы на странице -------------------------------
+
 forms.forEach(form => {
   const validator = new FormValidator(settings, form);
   validator.enableValidation();
@@ -61,13 +67,8 @@ renderCards.renderItems();
 
 editButton.addEventListener('click', () => {
   editPopup.open();
-  editPopup.setInputValues({
-    popupName: userInfo.getUserInfo().name,
-    popupActivity: userInfo.getUserInfo().activity
-  });
-  validators.popupEditForm.enableValidation();
 });
 addButton.addEventListener('click', () => {
   addPopup.open();
-  validators.popupAddForm.enableValidation();
+  validators['popupAddForm'].disableButton(); // Просто у меня идея с валидацией возникла, подумал, что просто при открытии будут все поля классом валидатора проверяться и все хорошо и все счастливы. И так так валидация при открытии происходит, то не получится заполнить попап валидными данными, не сохраняя закрыть, так как при след открытии произойдет валидация и кнопка задизейблится
 });

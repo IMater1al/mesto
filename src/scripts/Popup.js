@@ -2,7 +2,7 @@ export default class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
     this._handleEscClose = this._handleEscClose.bind(this);
-    this.setEventListeners();
+    this.setEventListeners(); // Получается если я вызову super конструктор из попапа с формой, то сработает seteventlistener не этот, а того самого наследника "попапа с формой"?.. И такой метод сработает если в seteventlistener у попапа с формой не будет элементов его конструктора? Просто пытаюсь понять правильно ли я понял... А как тогда безопасно можно вызвать seteventlistener после создания экзкмпляра класса? Через бинд как то это сделать?
   }
 
   open() {
