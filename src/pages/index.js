@@ -28,11 +28,6 @@ const validators = {};
 
 //---------------------------------- Основная часть кода ----------------------------------
 
-editPopup.setInputValues({
-  popupName: userInfo.getUserInfo().name,
-  popupActivity: userInfo.getUserInfo().activity
-});
-
 // Включение валидации для каждой формы на странице -------------------------------
 
 forms.forEach(form => {
@@ -66,6 +61,10 @@ renderCards.renderItems();
 
 editButton.addEventListener('click', () => {
   editPopup.open();
+  editPopup.setInputValues({
+    popupName: userInfo.getUserInfo().name,
+    popupActivity: userInfo.getUserInfo().activity
+  });
 });
 addButton.addEventListener('click', () => {
   addPopup.open();
