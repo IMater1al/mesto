@@ -54,7 +54,9 @@
 @import url('../block/photo-gallery/__image/photo-gallery__image.css');
 @import url('../block/photo-gallery/__item/photo-gallery__item.css');
 @import url('../block/photo-gallery/__like/photo-gallery__like.css');
-@import url('../block/photo-gallery/__like/_active/photo-gallery__like_active.css');
+@import url('../block/photo-gallery/__like-button/photo-gallery__like-button.css');
+@import url('../block/photo-gallery/__like-button/_active/photo-gallery__like-button_active.css');
+@import url('../block/photo-gallery/__like-counter/photo-gallery__like-counter.css');
 @import url('../block/photo-gallery/__list/photo-gallery__list.css');
 @import url('../block/photo-gallery/__name/photo-gallery__name.css');
 @import url('../block/photo-gallery/__remove/photo-gallery__remove.css');

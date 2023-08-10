@@ -1,8 +1,9 @@
 .photo-gallery__description {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     min-width: 246px;
     margin: 0 auto;
-    padding: 25px 0 31px 0;
+    padding: 22px 0 22px 0;
     color: #000;
 }

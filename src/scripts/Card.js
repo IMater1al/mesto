@@ -54,7 +54,7 @@ class Card {
 
   // Приватные методы для слушателей ---------------------------------
   _addLike(evt) {
-    evt.target.classList.toggle('photo-gallery__like_active');
+    evt.target.classList.toggle('photo-gallery__like-button_active');
   }
 
   _removeCard() {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Mesto Russia</title>
   </head>
   <body class="root">
@@ -120,10 +121,13 @@
         <img src="#" alt="#" class="photo-gallery__image" />
         <div class="photo-gallery__description">
           <h2 class="photo-gallery__name"></h2>
-          <button
-            aria-label="Лайк"
-            type="button"
-            class="photo-gallery__like button button_opacity_low"></button>
+          <div class="photo-gallery__like">
+            <button
+              aria-label="Лайк"
+              type="button"
+              class="photo-gallery__like-button button button_opacity_low"></button>
+            <p class="photo-gallery__like-counter">6</p>
+          </div>
         </div>
       </li>
     </template>
