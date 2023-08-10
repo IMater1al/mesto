@@ -13,7 +13,7 @@ export default class Section {
     this.clear();
 
     this._items.forEach(item => {
-      const element = this._renderer(item.name, item.link, item.owner._id, item._id);
+      const element = this._renderer(item.name, item.link, item.owner._id, item._id, item.likes);
       this.addItemAppend(element);
     });
   }

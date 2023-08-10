@@ -7,23 +7,31 @@ class Card {
     ownerId,
     userId,
     cardId,
-    removeCardRequest
+    removeCardRequest,
+    likes,
+    setLikeRequest,
+    removeLikeRequest
   ) {
     this._name = name;
     this._link = link;
     this._ownerId = ownerId;
     this._userId = userId;
     this._cardId = cardId;
+    this._likes = likes.length;
+    this._likesArray = likes;
     this._templateSelector = templateSelector;
 
     this._cardTemplate = document.querySelector(this._templateSelector).content;
     this._cardElement = this._cardTemplate.querySelector('.photo-gallery__item').cloneNode(true);
     this._cardImageElement = this._cardElement.querySelector('.photo-gallery__image');
 
-    this._likeButton = this._cardElement.querySelector('.photo-gallery__like');
+    this._likeButton = this._cardElement.querySelector('.photo-gallery__like-button');
+    this._likeCounter = this._cardElement.querySelector('.photo-gallery__like-counter');
     this._rmButton = this._cardElement.querySelector('.photo-gallery__remove');
 
     this._removeCardRequest = removeCardRequest;
+    this._setLikeRequest = setLikeRequest;
+    this._removeLikeRequest = removeLikeRequest;
 
     this._handleCardClick = handleCardClick;
   }
@@ -39,6 +47,13 @@ class Card {
       this._rmButton.style.display = 'none';
     }
 
+    this._likesArray.forEach(like => {
+      if (like._id === this._userId) {
+        this._addLike();
+      }
+    });
+
+    this._setLikesText(this._likes);
     this._setEventListeners();
 
     return this._cardElement;
@@ -52,20 +67,58 @@ class Card {
     this._setCardListener();
   }
 
+  // Приватные методы
+
+  _setLikesText(likes) {
+    this._likeCounter.textContent = likes;
+  }
+
   // Приватные методы для слушателей ---------------------------------
-  _addLike(evt) {
-    evt.target.classList.toggle('photo-gallery__like-button_active');
+
+  _checkLikeState(evt) {
+    if (evt.target.classList.contains('photo-gallery__like-button_active')) {
+      this._removeLikeRequest(this._cardId)
+        .then(res => {
+          this._setLikesText(res.likes.length);
+          this._removeLike();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      this._setLikeRequest(this._cardId)
+        .then(res => {
+          this._setLikesText(res.likes.length);
+          this._addLike();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+
+  _removeLike() {
+    this._likeButton.classList.remove('photo-gallery__like-button_active');
+  }
+
+  _addLike() {
+    this._likeButton.classList.add('photo-gallery__like-button_active');
   }
 
   _removeCard() {
-    this._removeCardRequest(this._cardId);
-    this._cardElement.remove();
+    this._removeCardRequest(this._cardId)
+      .then(res => {
+        this._cardElement.remove();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   // Слушатели --------------------------------------------------------
 
   _setLikeListener() {
-    this._likeButton.addEventListener('click', this._addLike);
+    this._likeButton.addEventListener('click', this._checkLikeState.bind(this));
   }
 
   _setRemoveListener() {

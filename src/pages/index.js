@@ -66,7 +66,8 @@ function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
   request
     .addNewCard(title, link)
     .then(res => {
-      renderCards.addItem(createCard(res.name, res.link, res.owner._id, res._id));
+      console.log(res);
+      renderCards.addItem(createCard(res.name, res.link, res.owner._id, res._id, res.likes));
     })
     .catch(err => {
       console.log(err);
@@ -75,7 +76,7 @@ function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
 }
 
 // Добавление карточки -------------------------------------------------
-function createCard(name, link, ownerId, cardId) {
+function createCard(name, link, ownerId, cardId, likes) {
   return new Card(
     name,
     link,
@@ -86,9 +87,20 @@ function createCard(name, link, ownerId, cardId) {
     ownerId,
     userId,
     cardId,
-    cardId => {
-      request.removeCard(cardId).catch(err => {
-        console.log(err);
+    async cardId => {
+      return await request.removeCard(cardId).catch(err => {
+        return Promise.reject(err);
+      });
+    },
+    likes,
+    async cardId => {
+      return await request.setLike(cardId).catch(err => {
+        return Promise.reject(err);
+      });
+    },
+    async cardId => {
+      return await request.removeLike(cardId).catch(err => {
+        return Promise.reject(err);
       });
     }
   ).createCard();
