@@ -35,6 +35,11 @@ const validators = {};
 
 //---------------------------------- Основная часть кода ----------------------------------
 
+const userId = await request.getUserInfo().then(res => {
+  userInfo.setUserInfo(res.name, res.about);
+  return res._id;
+});
+
 // Включение валидации для каждой формы на странице -------------------------------
 
 forms.forEach(form => {
@@ -50,23 +55,37 @@ function sendProfileData({ popupName: name, popupActivity: activity }) {
     .then(res => {
       userInfo.setUserInfo(res.name, res.about);
     })
-    .catch(res => {
-      console.log(res);
+    .catch(err => {
+      console.log(err);
     });
 
   editPopup.close();
 }
 
 function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
-  renderCards.addItem(createCard(title, link));
+  request
+    .addNewCard(title, link)
+    .then(res => {
+      renderCards.addItem(createCard(res.name, res.link, res.owner._id));
+    })
+    .catch(err => {
+      console.log(err);
+    });
   addPopup.close();
 }
 
 // Добавление карточки -------------------------------------------------
-function createCard(name, link) {
-  return new Card(name, link, '#card', (name, link) => {
-    imagePopup.open(name, link);
-  }).createCard();
+function createCard(name, link, ownerId) {
+  return new Card(
+    name,
+    link,
+    '#card',
+    (name, link) => {
+      imagePopup.open(name, link);
+    },
+    ownerId,
+    userId
+  ).createCard();
 }
 
 // Заполнение начальными карточками  -------------------------------------------------

@@ -1,7 +1,9 @@
 class Card {
-  constructor(name, link, templateSelector, handleCardClick) {
+  constructor(name, link, templateSelector, handleCardClick, ownerId, userId) {
     this._name = name;
     this._link = link;
+    this._ownerId = ownerId;
+    this._userId = userId;
     this._templateSelector = templateSelector;
 
     this._cardTemplate = document.querySelector(this._templateSelector).content;
@@ -20,6 +22,10 @@ class Card {
     this._cardImageElement.src = this._link;
     this._cardImageElement.alt = this._name;
     this._cardElement.querySelector('.photo-gallery__name').textContent = this._name;
+
+    if (this._ownerId !== this._userId) {
+      this._rmButton.style.display = 'none';
+    }
 
     this._setEventListeners();
 
