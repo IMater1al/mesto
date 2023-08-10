@@ -1,9 +1,19 @@
 class Card {
-  constructor(name, link, templateSelector, handleCardClick, ownerId, userId) {
+  constructor(
+    name,
+    link,
+    templateSelector,
+    handleCardClick,
+    ownerId,
+    userId,
+    cardId,
+    removeCardRequest
+  ) {
     this._name = name;
     this._link = link;
     this._ownerId = ownerId;
     this._userId = userId;
+    this._cardId = cardId;
     this._templateSelector = templateSelector;
 
     this._cardTemplate = document.querySelector(this._templateSelector).content;
@@ -12,6 +22,8 @@ class Card {
 
     this._likeButton = this._cardElement.querySelector('.photo-gallery__like');
     this._rmButton = this._cardElement.querySelector('.photo-gallery__remove');
+
+    this._removeCardRequest = removeCardRequest;
 
     this._handleCardClick = handleCardClick;
   }
@@ -46,6 +58,7 @@ class Card {
   }
 
   _removeCard() {
+    this._removeCardRequest(this._cardId);
     this._cardElement.remove();
   }
 

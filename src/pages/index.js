@@ -66,7 +66,7 @@ function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
   request
     .addNewCard(title, link)
     .then(res => {
-      renderCards.addItem(createCard(res.name, res.link, res.owner._id));
+      renderCards.addItem(createCard(res.name, res.link, res.owner._id, res._id));
     })
     .catch(err => {
       console.log(err);
@@ -75,7 +75,7 @@ function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
 }
 
 // Добавление карточки -------------------------------------------------
-function createCard(name, link, ownerId) {
+function createCard(name, link, ownerId, cardId) {
   return new Card(
     name,
     link,
@@ -84,7 +84,13 @@ function createCard(name, link, ownerId) {
       imagePopup.open(name, link);
     },
     ownerId,
-    userId
+    userId,
+    cardId,
+    cardId => {
+      request.removeCard(cardId).catch(err => {
+        console.log(err);
+      });
+    }
   ).createCard();
 }
 

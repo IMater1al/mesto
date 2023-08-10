@@ -69,4 +69,20 @@ export default class Api {
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
+
+  async removeCard(cardId) {
+    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token,
+        'Content-type': 'application/json'
+      }
+    }).then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
 }
