@@ -5,7 +5,8 @@ import PopupWithForm from '../scripts/PopupWithForm.js';
 import PopupWithImage from '../scripts/PopupWithImage.js';
 import Section from '../scripts/Section.js';
 import UserInfo from '../scripts/UserInfo.js';
-import { initialCards, settings, editButton, addButton, forms } from '../utils/constants.js';
+import { settings, editButton, addButton, forms, cohort, token } from '../utils/constants.js';
+import Api from '../scripts/Api.js';
 
 // Объявление переменных-------------------------------------------
 
@@ -16,6 +17,12 @@ const userInfo = new UserInfo({
 const editPopup = new PopupWithForm(sendProfileData, '#edit-popup');
 
 const addPopup = new PopupWithForm(sendGalleryData, '#add-popup');
+
+const request = new Api(token, cohort);
+
+const initialCards = await request.getInitialCards().catch(res => {
+  console.log(res);
+});
 
 const renderCards = new Section(
   { items: initialCards, renderer: createCard },
@@ -38,7 +45,15 @@ forms.forEach(form => {
 
 // Функции отправки данных --------------------------------------------------------
 function sendProfileData({ popupName: name, popupActivity: activity }) {
-  userInfo.setUserInfo(name, activity);
+  request
+    .editProfileData(name, activity)
+    .then(res => {
+      userInfo.setUserInfo(res.name, res.about);
+    })
+    .catch(res => {
+      console.log(res);
+    });
+
   editPopup.close();
 }
 
