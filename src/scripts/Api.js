@@ -115,4 +115,23 @@ export default class Api {
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
+
+  async changeAvatar(avatarLink) {
+    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: avatarLink
+      })
+    }).then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
 }

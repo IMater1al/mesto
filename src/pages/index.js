@@ -20,7 +20,8 @@ import Api from '../scripts/Api.js';
 
 const userInfo = new UserInfo({
   accountNameSelector: '.profile__name',
-  accountActivitySelector: '.profile__activity'
+  accountActivitySelector: '.profile__activity',
+  accountAvatarSelector: '.profile__avatar'
 });
 const editPopup = new PopupWithForm(sendProfileData, '#edit-popup');
 
@@ -30,8 +31,8 @@ const avatarPopup = new PopupWithForm(sendAvatarData, '#avatar-popup');
 
 const request = new Api(token, cohort);
 
-const initialCards = await request.getInitialCards().catch(res => {
-  console.log(res);
+const initialCards = await request.getInitialCards().catch(err => {
+  console.log(err);
 });
 
 const renderCards = new Section(
@@ -46,6 +47,7 @@ const validators = {};
 //---------------------------------- Основная часть кода ----------------------------------
 
 const userId = await request.getUserInfo().then(res => {
+  userInfo.setUserAvatar(res.avatar);
   userInfo.setUserInfo(res.name, res.about);
   return res._id;
 });
@@ -60,7 +62,14 @@ forms.forEach(form => {
 
 // Функции отправки данных --------------------------------------------------------
 function sendAvatarData({ popupAvatarLink: link }) {
-  // request
+  request
+    .changeAvatar(link)
+    .then(res => {
+      userInfo.setUserAvatar(res.avatar);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 
   avatarPopup.close();
 }
