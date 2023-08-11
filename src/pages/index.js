@@ -61,11 +61,12 @@ forms.forEach(form => {
 });
 
 // Функции отправки данных --------------------------------------------------------
-function sendAvatarData({ popupAvatarLink: link }) {
+function sendAvatarData({ popupAvatarLink: link }, evt) {
   request
     .changeAvatar(link)
     .then(res => {
       userInfo.setUserAvatar(res.avatar);
+      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
     })
     .catch(err => {
       console.log(err);
@@ -74,25 +75,26 @@ function sendAvatarData({ popupAvatarLink: link }) {
   avatarPopup.close();
 }
 
-function sendProfileData({ popupName: name, popupActivity: activity }) {
+function sendProfileData({ popupName: name, popupActivity: activity }, evt) {
   request
     .editProfileData(name, activity)
     .then(res => {
       userInfo.setUserInfo(res.name, res.about);
+      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
+      editPopup.close();
     })
     .catch(err => {
       console.log(err);
     });
-
-  editPopup.close();
 }
 
-function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
+function sendGalleryData({ popupPicName: title, popupPicLink: link }, evt) {
   request
     .addNewCard(title, link)
     .then(res => {
       console.log(res);
       renderCards.addItem(createCard(res.name, res.link, res.owner._id, res._id, res.likes));
+      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
     })
     .catch(err => {
       console.log(err);
