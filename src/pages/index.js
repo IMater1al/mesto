@@ -5,7 +5,15 @@ import PopupWithForm from '../scripts/PopupWithForm.js';
 import PopupWithImage from '../scripts/PopupWithImage.js';
 import Section from '../scripts/Section.js';
 import UserInfo from '../scripts/UserInfo.js';
-import { settings, editButton, addButton, forms, cohort, token } from '../utils/constants.js';
+import {
+  settings,
+  editButton,
+  addButton,
+  forms,
+  cohort,
+  token,
+  avatarButton
+} from '../utils/constants.js';
 import Api from '../scripts/Api.js';
 
 // Объявление переменных-------------------------------------------
@@ -17,6 +25,8 @@ const userInfo = new UserInfo({
 const editPopup = new PopupWithForm(sendProfileData, '#edit-popup');
 
 const addPopup = new PopupWithForm(sendGalleryData, '#add-popup');
+
+const avatarPopup = new PopupWithForm(sendAvatarData, '#avatar-popup');
 
 const request = new Api(token, cohort);
 
@@ -49,6 +59,12 @@ forms.forEach(form => {
 });
 
 // Функции отправки данных --------------------------------------------------------
+function sendAvatarData({ popupAvatarLink: link }) {
+  // request
+
+  avatarPopup.close();
+}
+
 function sendProfileData({ popupName: name, popupActivity: activity }) {
   request
     .editProfileData(name, activity)
@@ -121,4 +137,9 @@ editButton.addEventListener('click', () => {
 addButton.addEventListener('click', () => {
   addPopup.open();
   validators['popupAddForm'].disableButton();
+});
+
+avatarButton.addEventListener('click', () => {
+  avatarPopup.open();
+  validators['popupAvatarForm'].disableButton();
 });

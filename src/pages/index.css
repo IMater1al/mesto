@@ -11,6 +11,7 @@
 @import url('../block/root/__add-popup/root__add-popup.css');
 @import url('../block/root/__edit-popup/root__edit-popup.css');
 @import url('../block/root/__preview-popup/root__preview-popup.css');
+@import url('../block/root/__avatar-popup/root__avatar-popup.css');
 /* block .button */
 @import url('../block/button/button.css');
 @import url('../block/button/_opacity/button_opacity_low.css');
@@ -45,6 +46,7 @@
 @import url('../block/profile/__activity/profile__activity.css');
 @import url('../block/profile/__add-button/profile__add-button.css');
 @import url('../block/profile/__avatar/profile__avatar.css');
+@import url('../block/profile/__avatar-button/profile__avatar-button.css');
 @import url('../block/profile/__edit-button/profile__edit-button.css');
 @import url('../block/profile/__info/profile__info.css');
 @import url('../block/profile/__name/profile__name.css');
