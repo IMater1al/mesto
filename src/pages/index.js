@@ -1,6 +1,7 @@
 import '../pages/index.css';
 import { Card } from '../scripts/Card.js';
 import { FormValidator } from '../scripts/FormValidator.js';
+import Popup from '../scripts/Popup.js';
 import PopupWithForm from '../scripts/PopupWithForm.js';
 import PopupWithImage from '../scripts/PopupWithImage.js';
 import Section from '../scripts/Section.js';
@@ -28,6 +29,8 @@ const editPopup = new PopupWithForm(sendProfileData, '#edit-popup');
 const addPopup = new PopupWithForm(sendGalleryData, '#add-popup');
 
 const avatarPopup = new PopupWithForm(sendAvatarData, '#avatar-popup');
+
+const confirmPopup = new Popup('#confirm-popup');
 
 const request = new Api(token, cohort);
 
@@ -129,7 +132,8 @@ function createCard(name, link, ownerId, cardId, likes) {
       return await request.removeLike(cardId).catch(err => {
         return Promise.reject(err);
       });
-    }
+    },
+    confirmPopup
   ).createCard();
 }
 

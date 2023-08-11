@@ -10,7 +10,8 @@ class Card {
     removeCardRequest,
     likes,
     setLikeRequest,
-    removeLikeRequest
+    removeLikeRequest,
+    confirmPopup
   ) {
     this._name = name;
     this._link = link;
@@ -32,6 +33,8 @@ class Card {
     this._removeCardRequest = removeCardRequest;
     this._setLikeRequest = setLikeRequest;
     this._removeLikeRequest = removeLikeRequest;
+
+    this._confirmPopup = confirmPopup;
 
     this._handleCardClick = handleCardClick;
   }
@@ -97,6 +100,16 @@ class Card {
     }
   }
 
+  _confirmSendData() {
+    this._confirmPopup.open();
+    return new Promise(resolve => {
+      this._confirmPopup.getPopupMarkup().addEventListener('submit', evt => {
+        evt.preventDefault();
+        resolve();
+      });
+    });
+  }
+
   _removeLike() {
     this._likeButton.classList.remove('photo-gallery__like-button_active');
   }
@@ -106,13 +119,16 @@ class Card {
   }
 
   _removeCard() {
-    this._removeCardRequest(this._cardId)
-      .then(res => {
-        this._cardElement.remove();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this._confirmSendData().then(res => {
+      this._removeCardRequest(this._cardId)
+        .then(res => {
+          this._cardElement.remove();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this._confirmPopup.close();
+    });
   }
 
   // Слушатели --------------------------------------------------------

@@ -12,6 +12,7 @@
 @import url('../block/root/__edit-popup/root__edit-popup.css');
 @import url('../block/root/__preview-popup/root__preview-popup.css');
 @import url('../block/root/__avatar-popup/root__avatar-popup.css');
+@import url('../block/root/__confirm-popup/root__confirm-popup.css');
 /* block .button */
 @import url('../block/button/button.css');
 @import url('../block/button/_opacity/button_opacity_low.css');
@@ -36,6 +37,7 @@
 @import url('../block/popup/__close-edit/popup__close-edit.css');
 @import url('../block/popup/__close-add/popup__close-add.css');
 @import url('../block/popup/__close-preview/popup__close-preview.css');
+@import url('../block/popup/__confirm-header/popup__confirm-header.css');
 /* block .header */
 @import url('../block/header/header.css');
 @import url('../block/header/__logo/header__logo.css');
