@@ -1,10 +1,32 @@
 .profile__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0 23px 0 0;
     padding: 0;
-    object-fit: cover;
     width: 120px;
     height: 120px;
+    background-image: url('../../../images/jak_kusto_avatar-min.jpg');
+    background-size: cover;
     border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.profile__avatar::before {
+    content: url('../../../images/edit-button-big.svg');
+    padding: 100px;
+    margin: 0;
+    opacity: 0;
+    transition: all .3s ease;
+}
+
+.profile__avatar:hover::before {
+    content: url('../../../images/edit-button-big.svg');
+    padding: 100px;
+    margin: 0;
+    opacity: 1;
+    background-color: rgb(0, 0, 0, 0.8);
 }
 
 @media screen and (max-width: 700px) {
