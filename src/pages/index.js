@@ -130,6 +130,7 @@ function handleSubmit(request, popup, loadingText) {
     .catch(console.error)
     .finally(() => {
       popup.renderLoading(false);
+      validators[popup.getPopupForm().name].enableButton();
     });
 }
 
@@ -148,14 +149,10 @@ function createCard(name, link, ownerId, cardId, likes) {
     cardId: cardId,
     likes: likes,
     setLikeRequest: async cardId => {
-      return await request.setLike(cardId).catch(err => {
-        return Promise.reject(err);
-      });
+      return await request.setLike(cardId);
     },
     removeLikeRequest: async cardId => {
-      return await request.removeLike(cardId).catch(err => {
-        return Promise.reject(err);
-      });
+      return await request.removeLike(cardId);
     },
     confirmPopup: confirmPopup
   }).createCard();
@@ -167,6 +164,7 @@ function createCard(name, link, ownerId, cardId, likes) {
 
 editButton.addEventListener('click', () => {
   editPopup.open();
+  validators['popupEditForm'].resetValidation();
   const { activity, name } = userInfo.getUserInfo();
   editPopup.setInputValues({
     popupName: name,
