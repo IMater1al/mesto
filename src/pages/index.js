@@ -1,13 +1,13 @@
 import '../pages/index.css';
-import { Card } from '../scripts/Card.js';
-import { FormValidator } from '../scripts/FormValidator.js';
-import PopupConfirm from '../scripts/PopupConfirm.js';
-import PopupWithForm from '../scripts/PopupWithForm.js';
-import PopupWithImage from '../scripts/PopupWithImage.js';
-import Section from '../scripts/Section.js';
-import UserInfo from '../scripts/UserInfo.js';
+import { Card } from '../components/Card.js';
+import { FormValidator } from '../components/FormValidator.js';
+import PopupConfirm from '../components/PopupConfirm.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import Section from '../components/Section.js';
+import UserInfo from '../components/UserInfo.js';
 import { settings, editButton, addButton, forms, avatarButton } from '../utils/constants.js';
-import Api from '../scripts/Api.js';
+import Api from '../components/Api.js';
 
 // Объявление переменных-------------------------------------------
 
