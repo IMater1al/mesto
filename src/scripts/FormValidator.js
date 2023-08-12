@@ -55,6 +55,13 @@ class FormValidator {
     });
   }
 
+  resetValidation() {
+    this._inputElements.forEach(inputEl => {
+      this._hideError(inputEl);
+    });
+    this._isFormValid();
+  }
+
   // Функции включения и отключения кнопок -------------------------------------------
   disableButton() {
     this._buttonEl.classList.add(this._settings.inactiveButtonClass);

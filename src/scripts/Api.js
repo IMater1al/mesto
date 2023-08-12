@@ -1,137 +1,82 @@
 export default class Api {
-  constructor(token, cohort) {
-    this._token = token;
-    this._cohort = cohort;
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
   async getUserInfo() {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me`, {
-      headers: {
-        authorization: this._token
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
+    return await this._request(`/users/me`, {
+      headers: this._headers
     });
   }
 
   async getInitialCards() {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards `, {
-      headers: {
-        authorization: this._token
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
+    return await this._request(`/cards `, {
+      headers: this._headers
     });
   }
 
   async editProfileData(name, activity) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me`, {
+    return await this._request(`/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: name,
         about: activity
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   async addNewCard(name, link) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards`, {
+    return await this._request(`/cards`, {
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: name,
         link: link
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   async removeCard(cardId) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
+    return await this._request(`/cards/${cardId}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-        'Content-type': 'application/json'
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
+      headers: this._headers
     });
   }
 
   async setLike(cardId) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}/likes`, {
+    return await this._request(`/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: {
-        authorization: this._token
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
+      headers: this._headers
     });
   }
 
   async removeLike(cardId) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}/likes`, {
+    return await this._request(`/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
+      headers: this._headers
     });
   }
 
   async changeAvatar(avatarLink) {
-    return await fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me/avatar`, {
+    return await this._request(`/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar: avatarLink
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
     });
+  }
+
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
+  async _request(endpoint, options) {
+    return await fetch(`${this._baseUrl + endpoint}`, options).then(this._checkResponse);
   }
 }

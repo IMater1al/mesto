@@ -1,20 +1,12 @@
 import '../pages/index.css';
 import { Card } from '../scripts/Card.js';
 import { FormValidator } from '../scripts/FormValidator.js';
-import Popup from '../scripts/Popup.js';
+import PopupConfirm from '../scripts/PopupConfirm.js';
 import PopupWithForm from '../scripts/PopupWithForm.js';
 import PopupWithImage from '../scripts/PopupWithImage.js';
 import Section from '../scripts/Section.js';
 import UserInfo from '../scripts/UserInfo.js';
-import {
-  settings,
-  editButton,
-  addButton,
-  forms,
-  cohort,
-  token,
-  avatarButton
-} from '../utils/constants.js';
+import { settings, editButton, addButton, forms, avatarButton } from '../utils/constants.js';
 import Api from '../scripts/Api.js';
 
 // Объявление переменных-------------------------------------------
@@ -30,18 +22,29 @@ const addPopup = new PopupWithForm(sendGalleryData, '#add-popup');
 
 const avatarPopup = new PopupWithForm(sendAvatarData, '#avatar-popup');
 
-const confirmPopup = new Popup('#confirm-popup');
+const mixinMethods = {
+  renderLoading(isLoading, loadingText = 'Сохранение...') {
+    if (isLoading) {
+      this._submitButton.textContent = loadingText;
+    } else {
+      this._submitButton.textContent = this._submitButtonTxt;
+    }
+  },
 
-const request = new Api(token, cohort);
+  getPopupForm() {
+    return this._form;
+  }
+};
 
-const initialCards = await request.getInitialCards().catch(err => {
-  console.log(err);
+const confirmPopup = new PopupConfirm(removeCardData, '#confirm-popup');
+
+const request = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-72',
+  headers: {
+    authorization: '30cf22be-8f37-4b70-b933-ced2c424285c',
+    'Content-Type': 'application/json'
+  }
 });
-
-const renderCards = new Section(
-  { items: initialCards, renderer: createCard },
-  '.photo-gallery__list'
-);
 
 const imagePopup = new PopupWithImage('#preview-popup');
 
@@ -49,11 +52,18 @@ const validators = {};
 
 //---------------------------------- Основная часть кода ----------------------------------
 
-const userId = await request.getUserInfo().then(res => {
-  userInfo.setUserAvatar(res.avatar);
-  userInfo.setUserInfo(res.name, res.about);
-  return res._id;
-});
+Object.assign(PopupConfirm.prototype, mixinMethods); // тут так как создавал свой класс, а множественного наследования у js нет, пришлось в prototype вручную копировать метод renderLoading, чтобы и моя форма с подтверждением могла к ней обращаться (нашел способ в интернетах, возможно можно сделать лучше, но пока в голову ничего не приходит, буду рад критике и помощи)
+Object.assign(PopupWithForm.prototype, mixinMethods);
+
+let section;
+
+Promise.all([request.getUserInfo(), request.getInitialCards()])
+  .then(([userData, initialCards]) => {
+    userInfo.setUserInfo(userData);
+    section = new Section({ items: initialCards, renderer: createCard }, '.photo-gallery__list');
+    section.renderItems();
+  })
+  .catch(console.error);
 
 // Включение валидации для каждой формы на странице -------------------------------
 
@@ -64,97 +74,105 @@ forms.forEach(form => {
 });
 
 // Функции отправки данных --------------------------------------------------------
-function sendAvatarData({ popupAvatarLink: link }, evt) {
-  request
-    .changeAvatar(link)
-    .then(res => {
-      userInfo.setUserAvatar(res.avatar);
-      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
-    })
-    .catch(err => {
-      console.log(err);
+function sendAvatarData({ popupAvatarLink: link }) {
+  async function makeRequest() {
+    return await request.changeAvatar(link).then(res => {
+      userInfo.setUserInfo({ name: res.name, about: res.about, avatar: res.avatar, _id: res._id });
     });
+  }
 
-  avatarPopup.close();
+  handleSubmit(makeRequest, avatarPopup);
 }
 
-function sendProfileData({ popupName: name, popupActivity: activity }, evt) {
-  request
-    .editProfileData(name, activity)
-    .then(res => {
-      userInfo.setUserInfo(res.name, res.about);
-      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
-      editPopup.close();
-    })
-    .catch(err => {
-      console.log(err);
+function sendProfileData({ popupName: name, popupActivity: activity }) {
+  async function makeRequest() {
+    return await request.editProfileData(name, activity).then(res => {
+      userInfo.setUserInfo({ name: res.name, about: res.about, avatar: res.avatar, _id: res._id });
     });
+  }
+
+  handleSubmit(makeRequest, editPopup);
 }
 
-function sendGalleryData({ popupPicName: title, popupPicLink: link }, evt) {
-  request
-    .addNewCard(title, link)
-    .then(res => {
-      console.log(res);
-      renderCards.addItem(createCard(res.name, res.link, res.owner._id, res._id, res.likes));
-      evt.target.querySelector('button[type="submit"]').textContent = 'Сохранить';
-    })
-    .catch(err => {
-      console.log(err);
+function sendGalleryData({ popupPicName: title, popupPicLink: link }) {
+  async function makeRequest() {
+    return request.addNewCard(title, link).then(res => {
+      section.addItem(createCard(res.name, res.link, res.owner._id, res._id, res.likes));
     });
-  addPopup.close();
+  }
+
+  handleSubmit(makeRequest, addPopup);
+}
+
+function removeCardData(data) {
+  async function makeRequest() {
+    return await request.removeCard(data.cardId).then(() => {
+      data.cardEl.remove();
+    });
+  }
+
+  handleSubmit(makeRequest, confirmPopup, 'Удаление...');
+}
+
+function handleSubmit(request, popup, loadingText) {
+  popup.renderLoading(true, loadingText);
+  validators[popup.getPopupForm().name].disableButton(); // тут пришлось кнопку дизейблить, потому что при нажатии несколько раз во время сохранения отправляется несколько запросов сразу (случайно нашел баг)
+  request()
+    .then(() => {
+      popup.close();
+    })
+    .catch(console.error)
+    .finally(() => {
+      popup.renderLoading(false);
+    });
 }
 
 // Добавление карточки -------------------------------------------------
 function createCard(name, link, ownerId, cardId, likes) {
-  return new Card(
-    name,
-    link,
-    '#card',
-    (name, link) => {
+  return new Card({
+    name: name,
+    link: link,
+
+    templateSelector: '#card',
+    handleCardClick: (name, link) => {
       imagePopup.open(name, link);
     },
-    ownerId,
-    userId,
-    cardId,
-    async cardId => {
-      return await request.removeCard(cardId).catch(err => {
-        return Promise.reject(err);
-      });
-    },
-    likes,
-    async cardId => {
+    ownerId: ownerId,
+    userId: userInfo.getUserInfo()._id,
+    cardId: cardId,
+    likes: likes,
+    setLikeRequest: async cardId => {
       return await request.setLike(cardId).catch(err => {
         return Promise.reject(err);
       });
     },
-    async cardId => {
+    removeLikeRequest: async cardId => {
       return await request.removeLike(cardId).catch(err => {
         return Promise.reject(err);
       });
     },
-    confirmPopup
-  ).createCard();
+    confirmPopup: confirmPopup
+  }).createCard();
 }
 
 // Заполнение начальными карточками  -------------------------------------------------
-renderCards.renderItems();
 
 // Слушатели ------------------------------------------
 
 editButton.addEventListener('click', () => {
   editPopup.open();
+  const { activity, name } = userInfo.getUserInfo();
   editPopup.setInputValues({
-    popupName: userInfo.getUserInfo().name,
-    popupActivity: userInfo.getUserInfo().activity
+    popupName: name,
+    popupActivity: activity
   });
 });
 addButton.addEventListener('click', () => {
   addPopup.open();
-  validators['popupAddForm'].disableButton();
+  validators['popupAddForm'].resetValidation();
 });
 
 avatarButton.addEventListener('click', () => {
   avatarPopup.open();
-  validators['popupAvatarForm'].disableButton();
+  validators['popupAvatarForm'].resetValidation();
 });

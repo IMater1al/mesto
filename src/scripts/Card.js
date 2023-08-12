@@ -1,5 +1,5 @@
 class Card {
-  constructor(
+  constructor({
     name,
     link,
     templateSelector,
@@ -7,12 +7,11 @@ class Card {
     ownerId,
     userId,
     cardId,
-    removeCardRequest,
     likes,
     setLikeRequest,
     removeLikeRequest,
     confirmPopup
-  ) {
+  }) {
     this._name = name;
     this._link = link;
     this._ownerId = ownerId;
@@ -30,7 +29,7 @@ class Card {
     this._likeCounter = this._cardElement.querySelector('.photo-gallery__like-counter');
     this._rmButton = this._cardElement.querySelector('.photo-gallery__remove');
 
-    this._removeCardRequest = removeCardRequest;
+    // this._removeCardRequest = removeCardRequest;
     this._setLikeRequest = setLikeRequest;
     this._removeLikeRequest = removeLikeRequest;
 
@@ -100,16 +99,6 @@ class Card {
     }
   }
 
-  _confirmSendData() {
-    this._confirmPopup.open();
-    return new Promise(resolve => {
-      this._confirmPopup.getPopupMarkup().addEventListener('submit', evt => {
-        evt.preventDefault();
-        resolve();
-      });
-    });
-  }
-
   _removeLike() {
     this._likeButton.classList.remove('photo-gallery__like-button_active');
   }
@@ -119,16 +108,8 @@ class Card {
   }
 
   _removeCard() {
-    this._confirmSendData().then(res => {
-      this._removeCardRequest(this._cardId)
-        .then(res => {
-          this._cardElement.remove();
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      this._confirmPopup.close();
-    });
+    this._confirmPopup.open();
+    this._confirmPopup.setData({ cardId: this._cardId, cardEl: this._cardElement });
   }
 
   // Слушатели --------------------------------------------------------
