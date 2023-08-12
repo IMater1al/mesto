@@ -11,12 +11,6 @@ import Api from '../components/Api.js';
 
 // Объявление переменных-------------------------------------------
 
-/*
-
-  Так, вроде все исправил, насчет удаления нескольких карточек посмотрел, действительно было так как вы сказали, ничего умнее не придумал, чем создать свой собственный класс (с блекджеком и листенерами). Спасибо большое за столько лайфхаков "Можно лучше" в ревью, прочитал вник и добавил в свой код, стало действительно чище. Нашел небольшой баг с кнопкой сохранения, описал его ниже. И пришлось залезть в прототипы, чтобы пару методов добавить и в один и в другой класс. 
-
-*/
-
 const userInfo = new UserInfo({
   accountNameSelector: '.profile__name',
   accountActivitySelector: '.profile__activity',
@@ -58,7 +52,7 @@ const validators = {};
 
 //---------------------------------- Основная часть кода ----------------------------------
 
-Object.assign(PopupConfirm.prototype, mixinMethods); // тут так как создавал свой класс, а множественного наследования у js нет, пришлось в prototype вручную копировать метод renderLoading, чтобы и моя форма с подтверждением могла к ней обращаться (нашел способ в интернетах, возможно можно сделать лучше, но пока в голову ничего не приходит, буду рад критике и помощи)
+Object.assign(PopupConfirm.prototype, mixinMethods);
 Object.assign(PopupWithForm.prototype, mixinMethods);
 
 let section;
@@ -122,7 +116,7 @@ function removeCardData(data) {
 
 function handleSubmit(request, popup, loadingText) {
   popup.renderLoading(true, loadingText);
-  validators[popup.getPopupForm().name].disableButton(); // тут пришлось кнопку дизейблить, потому что при нажатии несколько раз во время сохранения отправляется несколько запросов сразу (случайно нашел баг)
+  validators[popup.getPopupForm().name].disableButton();
   request()
     .then(() => {
       popup.close();
